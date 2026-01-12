@@ -3,12 +3,9 @@ import {
   AlertTriangle, 
   CheckCircle, 
   XCircle, 
-  Activity, 
-  Search, 
-  ArrowRight,
   ExternalLink,
   Loader2,
-  Menu
+  ArrowRight
 } from 'lucide-react';
 
 const InventoryWatchlist = () => {
@@ -18,51 +15,19 @@ const InventoryWatchlist = () => {
   // Ford Brand Colors
   const FORD_BLUE = '#003478'; 
 
-  // Mock Data
   const inventoryData = [
-    { 
-      id: 1, 
-      name: 'Microchips (Type A)', 
-      sku: 'MC-204-A',
-      qty: 15000, 
-      status: 'Stable', 
-      trend: 'up' 
-    },
-    { 
-      id: 2, 
-      name: 'Steel Roll (Grade 4)', 
-      sku: 'SR-GR4-002',
-      qty: 2400, 
-      status: 'Low', 
-      trend: 'down' 
-    },
-    { 
-      id: 3, 
-      name: 'Rubber Seals', 
-      sku: 'RS-SEAL-099',
-      qty: 0, 
-      status: 'Critical', 
-      trend: 'flat' 
-    },
-    { 
-      id: 4, 
-      name: 'Aluminum Casings', 
-      sku: 'AL-CASE-55',
-      qty: 8500, 
-      status: 'Stable', 
-      trend: 'up' 
-    },
+    { id: 1, name: 'Microchips (Type A)', sku: 'MC-204-A', qty: 15000, status: 'Stable' },
+    { id: 2, name: 'Steel Roll (Grade 4)', sku: 'SR-GR4-002', qty: 2400, status: 'Low' },
+    { id: 3, name: 'Rubber Seals', sku: 'RS-SEAL-099', qty: 0, status: 'Critical' },
+    { id: 4, name: 'Aluminum Casings', sku: 'AL-CASE-55', qty: 8500, status: 'Stable' },
   ];
 
   const handleRowClick = (item) => {
-    if (item.status === 'Critical') {
-      setSelectedItem(item);
-    }
+    if (item.status === 'Critical') setSelectedItem(item);
   };
 
   const launchSAP = () => {
     setLaunchingSAP(true);
-    // Simulate connection delay
     setTimeout(() => {
       setLaunchingSAP(false);
       alert("SAP S/4HANA Workflow Triggered for Material: RS-SEAL-099");
@@ -70,180 +35,104 @@ const InventoryWatchlist = () => {
     }, 2000);
   };
 
-  const getStatusColor = (status) => {
-    switch (status) {
-      case 'Stable': return 'bg-emerald-50 text-emerald-700 border-emerald-200';
-      case 'Low': return 'bg-amber-50 text-amber-700 border-amber-200';
-      case 'Critical': return 'bg-red-50 text-red-700 border-red-200 animate-pulse-slow font-semibold';
-      default: return 'bg-gray-50 text-gray-700';
-    }
-  };
-
   const getStatusIcon = (status) => {
     switch (status) {
-      case 'Stable': return <CheckCircle className="w-3.5 h-3.5 mr-1.5" />;
-      case 'Low': return <AlertTriangle className="w-3.5 h-3.5 mr-1.5" />;
-      case 'Critical': return <XCircle className="w-3.5 h-3.5 mr-1.5" />;
+      case 'Stable': return <CheckCircle className="w-3 h-3 text-emerald-600" />;
+      case 'Low': return <AlertTriangle className="w-3 h-3 text-amber-600" />;
+      case 'Critical': return <XCircle className="w-3 h-3 text-red-600" />;
       default: return null;
     }
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 font-sans text-gray-800 flex flex-col items-center justify-center p-4">
+    <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
       
-      {/* Compact Widget Container */}
-      <div className="w-full max-w-3xl bg-white rounded-lg shadow-lg border border-gray-200 overflow-hidden">
+      {/* Slim Widget Container */}
+      <div className="w-full max-w-[340px] bg-white rounded-md shadow-sm border border-gray-200 overflow-hidden font-sans">
         
-        {/* Ford Brand Header - Compact */}
-        <div className="px-5 py-3 flex items-center justify-between" style={{ backgroundColor: FORD_BLUE }}>
-          <div className="flex items-center gap-3">
-            <Menu className="w-5 h-5 text-white cursor-pointer hover:opacity-80" />
-            <h1 className="text-sm font-bold tracking-wide uppercase leading-none text-white">Line A Watchlist</h1>
-          </div>
-          <div className="flex items-center">
-            <div className="flex items-center bg-blue-900/50 rounded px-2 py-1 border border-blue-400/30">
-              <Search className="w-3 h-3 text-blue-200 mr-2" />
-              <span className="text-xs text-blue-200">Search...</span>
-            </div>
+        {/* Compact Header */}
+        <div className="px-3 py-2 flex items-center justify-between" style={{ backgroundColor: FORD_BLUE }}>
+          <h1 className="text-xs font-bold tracking-wider uppercase text-white">Critical Watchlist</h1>
+          <div className="flex items-center gap-1.5">
+            <span className="text-[9px] text-blue-200 uppercase opacity-80">Line A</span>
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
           </div>
         </div>
 
-        {/* Main Content Area */}
-        <div className="p-0">
-          <div className="flex justify-between items-center px-5 py-3 border-b border-gray-100 bg-gray-50/50">
-             <div className="flex items-center gap-2">
-               <Activity className="w-4 h-4 text-gray-400" />
-               <h2 className="text-sm font-bold text-gray-700 uppercase tracking-wide">Live Inventory Feed</h2>
-             </div>
-             <span className="text-[10px] font-mono text-gray-400 flex items-center">
-               <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 mr-1.5 animate-pulse"></span>
-               CONNECTED
-             </span>
-          </div>
+        {/* Condensed List */}
+        <div className="divide-y divide-gray-100">
+          {inventoryData.map((item) => (
+            <div 
+              key={item.id}
+              onClick={() => handleRowClick(item)}
+              className={`
+                group flex items-center justify-between px-3 py-2.5 transition-all duration-150
+                ${item.status === 'Critical' 
+                  ? 'bg-red-50 hover:bg-red-100 cursor-pointer border-l-[3px] border-l-red-500 pl-[9px]' 
+                  : 'hover:bg-gray-50 border-l-[3px] border-l-transparent pl-[9px]'}
+              `}
+            >
+              {/* Left: Info */}
+              <div className="flex flex-col">
+                <span className={`text-xs font-bold leading-tight ${item.status === 'Critical' ? 'text-red-900' : 'text-gray-800'}`}>
+                  {item.name}
+                </span>
+                <span className="text-[10px] text-gray-500 font-mono mt-0.5">
+                  {item.qty.toLocaleString()} units
+                </span>
+              </div>
 
-          {/* Table Header */}
-          <div className="grid grid-cols-12 gap-2 px-5 py-2 bg-white border-b border-gray-100 text-[10px] font-bold text-gray-500 uppercase tracking-wider">
-            <div className="col-span-6 pl-1">Part Details</div>
-            <div className="col-span-3 text-right pr-2">Stock</div>
-            <div className="col-span-3 text-center">Status</div>
-          </div>
-
-          {/* Table Rows */}
-          <div className="divide-y divide-gray-100">
-            {inventoryData.map((item) => (
-              <div 
-                key={item.id}
-                onClick={() => handleRowClick(item)}
-                className={`
-                  group grid grid-cols-12 gap-2 px-5 py-3 items-center transition-all duration-150
-                  ${item.status === 'Critical' 
-                    ? 'bg-red-50/40 hover:bg-red-50 cursor-pointer border-l-4 border-l-red-500 pl-4' 
-                    : 'hover:bg-gray-50 border-l-4 border-l-transparent pl-4'}
-                `}
-              >
-                {/* Part Name */}
-                <div className="col-span-6">
-                  <div className={`font-bold text-sm ${item.status === 'Critical' ? 'text-red-900' : 'text-gray-800'}`}>
-                    {item.name}
-                  </div>
-                  <div className="text-[10px] text-gray-400 font-mono tracking-wide">{item.sku}</div>
-                </div>
-
-                {/* Quantity */}
-                <div className="col-span-3 text-right pr-2">
-                  <span className={`text-sm font-semibold ${item.qty === 0 ? 'text-red-700' : 'text-gray-600'}`}>
-                    {item.qty.toLocaleString()}
+              {/* Right: Status */}
+              <div className="flex items-center gap-2">
+                {item.status === 'Critical' && (
+                  <span className="text-[9px] font-bold text-red-600 uppercase tracking-tight group-hover:underline">
+                    Action
                   </span>
-                </div>
-
-                {/* Status Badge */}
-                <div className="col-span-3 flex justify-center">
-                  <span className={`
-                    inline-flex items-center px-2 py-0.5 rounded-sm text-[10px] font-bold uppercase tracking-wide border
-                    ${getStatusColor(item.status)}
-                  `}>
-                    {getStatusIcon(item.status)}
-                    {item.status}
-                  </span>
+                )}
+                <div className={`
+                  flex items-center justify-center w-6 h-6 rounded-full border
+                  ${item.status === 'Critical' ? 'bg-white border-red-200 shadow-sm' : 'bg-gray-50 border-gray-100'}
+                `}>
+                  {getStatusIcon(item.status)}
                 </div>
               </div>
-            ))}
-          </div>
-          
-          {/* Footer */}
-          <div className="bg-gray-50 px-5 py-2 border-t border-gray-200 flex justify-between items-center">
-            <span className="text-[10px] text-gray-400 font-medium">Monitoring Node: A-14</span>
-          </div>
+            </div>
+          ))}
+        </div>
+        
+        {/* Micro Footer */}
+        <div className="bg-gray-50 px-3 py-1.5 border-t border-gray-200 text-center">
+          <p className="text-[9px] text-gray-400 font-medium">Synced: 14:02 PM • Ford SCM</p>
         </div>
       </div>
 
-      {/* Modal / Action Panel Overlay */}
+      {/* Compact Modal */}
       {selectedItem && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200">
-          <div 
-            className="bg-white w-full max-w-sm rounded-lg shadow-2xl overflow-hidden animate-in zoom-in-95 duration-200"
-            onClick={(e) => e.stopPropagation()}
-          >
-            {/* Modal Header */}
-            <div className="px-5 py-3 flex items-center justify-between border-b border-gray-200 bg-red-50">
-                <div className="flex items-center gap-2">
-                  <AlertTriangle className="w-4 h-4 text-red-600" />
-                  <h3 className="text-xs font-bold text-red-900 uppercase tracking-wider">Critical Stock Alert</h3>
-                </div>
-                <button onClick={() => setSelectedItem(null)}>
-                  <XCircle className="w-5 h-5 text-gray-400 hover:text-gray-600" />
-                </button>
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm animate-in fade-in duration-200">
+          <div className="bg-white w-full max-w-[300px] rounded shadow-xl overflow-hidden animate-in zoom-in-95 duration-200" onClick={(e) => e.stopPropagation()}>
+            <div className="px-4 py-3 bg-red-50 border-b border-red-100 flex justify-between items-center">
+               <h3 className="text-xs font-bold text-red-800 uppercase">Stock Alert</h3>
+               <button onClick={() => setSelectedItem(null)} className="text-red-400 hover:text-red-600">
+                 <XCircle className="w-4 h-4" />
+               </button>
             </div>
-
-            <div className="p-5">
-              <div className="mb-6 text-center">
-                 <h2 className="text-xl font-light text-gray-900 mb-1">{selectedItem.name}</h2>
-                 <p className="text-xs text-gray-500 font-mono">{selectedItem.sku}</p>
-                 <div className="mt-4 inline-block px-3 py-1 bg-red-100 text-red-700 rounded text-xs font-bold uppercase tracking-wide">
-                   0 Units Available
-                 </div>
+            <div className="p-4">
+              <div className="text-center mb-4">
+                 <div className="text-sm font-bold text-gray-900">{selectedItem.name}</div>
+                 <div className="text-xs text-red-600 font-bold mt-1">0 Units On Hand</div>
               </div>
-
-              <div className="space-y-3">
-                <button 
-                  onClick={launchSAP}
-                  disabled={launchingSAP}
-                  className="w-full text-white font-bold text-xs uppercase tracking-wider py-3 rounded-sm flex items-center justify-center transition-all shadow-md hover:shadow-lg"
-                  style={{ backgroundColor: FORD_BLUE }}
-                >
-                  {launchingSAP ? (
-                    <>
-                      <Loader2 className="w-3 h-3 mr-2 animate-spin" />
-                      Triggering SAP Workflow...
-                    </>
-                  ) : (
-                    <>
-                      Create Emergency PO
-                      <ExternalLink className="w-3 h-3 ml-2 opacity-80" />
-                    </>
-                  )}
-                </button>
-                <button 
-                  onClick={() => setSelectedItem(null)}
-                  className="w-full bg-white border border-gray-300 hover:bg-gray-50 text-gray-600 font-bold text-xs uppercase tracking-wider py-3 rounded-sm transition-colors"
-                >
-                  Dismiss
-                </button>
-              </div>
+              <button 
+                onClick={launchSAP}
+                disabled={launchingSAP}
+                className="w-full text-white text-xs font-bold uppercase py-2.5 rounded-sm flex items-center justify-center shadow-sm"
+                style={{ backgroundColor: FORD_BLUE }}
+              >
+                {launchingSAP ? <Loader2 className="w-3 h-3 animate-spin" /> : <>Open SAP <ExternalLink className="w-3 h-3 ml-1.5" /></>}
+              </button>
             </div>
           </div>
         </div>
       )}
-
-      <style>{`
-        @keyframes pulse-slow {
-          0%, 100% { background-color: rgb(254 242 242); border-color: rgb(254 202 202); }
-          50% { background-color: rgb(255 255 255); border-color: rgb(252 165 165); }
-        }
-        .animate-pulse-slow {
-          animation: pulse-slow 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-        }
-      `}</style>
     </div>
   );
 };
